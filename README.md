@@ -13,6 +13,22 @@
 - 真實時間日夜狀態與修行排程
 - PWA 安裝、離線模式、連續修行天數與修行紀錄
 
+## 線上預覽
+
+GitHub Pages 部署完成後，可從以下網址開啟：
+
+https://et101214.github.io/ZenPractice-GPT/
+
+專案已加入 GitHub Actions 自動部署流程。之後只要更新 `main` 分支，就會重新部署網站。
+
+首次使用時，請到 GitHub 專案：
+
+`Settings → Pages → Source`
+
+選擇：
+
+`GitHub Actions`
+
 ## 線上檔案
 
 `index.html` 為自包含版本，所有 UI 圖片已內嵌，可直接開啟或部署到 GitHub Pages。
