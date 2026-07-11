@@ -1,0 +1,10 @@
+{
+  "name": "禪院修行",
+  "short_name": "禪院修行",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#080503",
+  "theme_color": "#2b160c",
+  "orientation": "any",
+  "icons": []
+}
