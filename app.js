@@ -15,7 +15,7 @@ updateDaylight();setInterval(updateDaylight,60000);
 const hm=document.getElementById("homeMonk"),hmi=document.getElementById("homeMonkImg"),hs=document.getElementById("homeStatus");
 const acts={sweep:{x:"26%",y:"55%",img:asset("monk_sweep"),text:"正在中庭掃地。"},bow:{x:"49%",y:"39%",img:asset("monk_bow"),text:"正在佛前禮佛。"},write:{x:"72%",y:"53%",img:asset("monk_write"),text:"正在抄經桌抄經。"},meditate:{x:"49%",y:"48%",img:asset("monk_meditate"),text:"正在大殿中打坐。"},dine:{x:"69%",y:"59%",img:asset("monk_dine"),text:"正在齋堂用膳。"},sleep:{x:"68%",y:"60%",img:asset("monk_sleep"),text:"已回禪房休息。"}};
 let busy=false;
-function activity(name){if(busy)return;busy=true;const a=acts[name];hm.classList.add("walking");hmi.src=asset("monk_walk");hs.innerHTML="<b>明心</b> 正前往目的地。";hm.style.left=a.x;hm.style.top=a.y;setTimeout(()=>{hm.classList.remove("walking");hmi.src=a.img;hs.innerHTML="<b>明心</b> "+a.text;busy=false},2450)}
+function activity(name){if(busy)return false;busy=true;const a=acts[name];hm.classList.add("walking");hmi.src=asset("monk_walk");hs.innerHTML="<b>明心</b> 正前往目的地。";hm.style.left=a.x;hm.style.top=a.y;setTimeout(()=>{hm.classList.remove("walking");hmi.src=a.img;hs.innerHTML="<b>明心</b> "+a.text;busy=false},2450);return true}
 document.querySelectorAll("[data-action]").forEach(b=>b.onclick=()=>activity(b.dataset.action));
 function scheduledAction(){const h=new Date().getHours();if(h>=22||h<5)return "sleep";if(h<8)return "bow";if(h<11)return "sweep";if(h<13)return "dine";if(h<17)return "write";if(h<20)return "meditate";return "bow"}
 const scheduleEnabled=()=>store.get("settings",{schedule:true}).schedule!==false;
@@ -65,7 +65,7 @@ const originalSave=document.getElementById("save").onclick;
 document.getElementById("save").onclick=()=>{originalSave?.();addHistory("抄經","完成一頁");updateStreak()};
 const originalPlay=document.getElementById("play").onclick;
 document.getElementById("play").onclick=()=>{const wasPlaying=playing;originalPlay?.();if(wasPlaying&&!playing){addHistory("誦經","完成一次");updateStreak()}};
-document.querySelectorAll("[data-action]").forEach(btn=>{const old=btn.onclick;btn.onclick=()=>{old?.();addHistory("寺院修行",btn.dataset.action)}});
+document.querySelectorAll("[data-action]").forEach(btn=>{const old=btn.onclick;btn.onclick=()=>{if(old?.())addHistory("寺院修行",btn.dataset.action)}});
 let deferredPrompt=null;
 window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;document.getElementById("installBtn").classList.add("show")});
 document.getElementById("installBtn").onclick=async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;document.getElementById("installBtn").classList.remove("show")};
