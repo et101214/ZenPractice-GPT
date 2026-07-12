@@ -22,8 +22,8 @@ setTimeout(()=>activity(scheduledAction()),1200);
 setInterval(()=>{if(!busy&&store.get("settings",{schedule:true}).schedule!==false)activity(scheduledAction())},18000);
 function progress(){const copied=store.get("copyCount",0),chant=store.get("chantCount",0);const pct=Math.min(100,Math.round(copied*20+chant*10));document.getElementById("homeProgress").style.width=pct+"%";document.getElementById("progressText").textContent=pct+"%"}
 progress();
-const c=document.getElementById("draw"),ctx=c.getContext("2d");let down=false,last=null,tool="brush";
-function resize(){const r=c.getBoundingClientRect(),d=devicePixelRatio||1;const old=c.toDataURL();c.width=r.width*d;c.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);ctx.lineCap="round";ctx.lineJoin="round";if(old&&old!=="data:,"){const img=new Image();img.onload=()=>ctx.drawImage(img,0,0,r.width,r.height);img.src=old}}
+const c=document.getElementById("draw"),ctx=c.getContext("2d");let down=false,last=null,tool="brush",canvasReady=false;
+function resize(){const r=c.getBoundingClientRect();if(!r.width||!r.height)return;const d=devicePixelRatio||1,old=canvasReady?c.toDataURL():store.get("copyImage",null);canvasReady=true;c.width=r.width*d;c.height=r.height*d;ctx.setTransform(d,0,0,d,0,0);ctx.lineCap="round";ctx.lineJoin="round";if(old){const img=new Image();img.onload=()=>ctx.drawImage(img,0,0,r.width,r.height);img.src=old}}
 addEventListener("resize",resize);
 document.querySelectorAll("[data-tool]").forEach(b=>b.onclick=()=>{tool=b.dataset.tool;document.querySelectorAll("[data-tool]").forEach(x=>x.classList.toggle("active",x===b))});
 function pos(e){const r=c.getBoundingClientRect();return[e.clientX-r.left,e.clientY-r.top]}
