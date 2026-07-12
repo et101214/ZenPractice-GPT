@@ -36,7 +36,9 @@ const fontMenu=document.getElementById("fontMenu");
 document.getElementById("fontBtn").onclick=()=>fontMenu.classList.toggle("show");
 fontMenu.querySelectorAll("button").forEach(b=>b.onclick=()=>{document.querySelector(".canvas-wrap").style.fontFamily=b.dataset.font;fontMenu.classList.remove("show");msg("已切換字體")});
 const lines=["觀自在菩薩，行深般若波羅蜜多時。","照見五蘊皆空，度一切苦厄。","舍利子，色不異空，空不異色。","色即是空，空即是色。","受想行識，亦復如是。"];
-let li=0,playing=false,timer=null,voiceOn=true,woodfishOn=true,speed=1;const line=document.getElementById("chantLine");
+let settings=store.get("settings",{music:true,woodfish:true,schedule:true,autosave:true});
+let li=0,playing=false,timer=null,voiceOn=true,woodfishOn=settings.woodfish!==false,speed=1;const line=document.getElementById("chantLine");
+document.getElementById("woodfish").textContent="木魚："+(woodfishOn?"開":"關");
 function render(){line.textContent=lines[li];if(voiceOn&&playing&&"speechSynthesis"in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(lines[li]);u.lang="zh-TW";u.rate=.8*speed;speechSynthesis.speak(u)}}
 function tick(){li=(li+1)%lines.length;render();if(woodfishOn)beep()}
 function beep(){try{const ac=new(window.AudioContext||window.webkitAudioContext)(),o=ac.createOscillator(),g=ac.createGain();o.type="sine";o.frequency.value=180;g.gain.setValueAtTime(.08,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.12);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+.12)}catch{}}
@@ -44,13 +46,12 @@ document.getElementById("prev").onclick=()=>{li=(li-1+lines.length)%lines.length
 document.getElementById("next").onclick=()=>{li=(li+1)%lines.length;render()};
 document.getElementById("play").onclick=()=>{playing=!playing;document.getElementById("play").textContent=playing?"Ⅱ":"▶";clearInterval(timer);if(playing){msg("小沙彌陪你誦經中");render();timer=setInterval(tick,2600/speed)}else{speechSynthesis?.cancel?.();store.set("chantCount",store.get("chantCount",0)+1);progress();renderLibrary();msg("誦經已暫停")}};
 document.getElementById("voice").onclick=()=>{voiceOn=!voiceOn;document.getElementById("voice").textContent="語音："+(voiceOn?"開":"關")};
-document.getElementById("woodfish").onclick=()=>{woodfishOn=!woodfishOn;document.getElementById("woodfish").textContent="木魚："+(woodfishOn?"開":"關")};
+document.getElementById("woodfish").onclick=()=>{woodfishOn=!woodfishOn;settings.woodfish=woodfishOn;store.set("settings",settings);document.querySelector('[data-setting="woodfish"]').classList.toggle("on",woodfishOn);document.getElementById("woodfish").textContent="木魚："+(woodfishOn?"開":"關")};
 document.getElementById("speed").onclick=()=>{speed=speed===1?1.25:speed===1.25?.75:1;document.getElementById("speed").textContent="速度 "+speed+"×";if(playing){clearInterval(timer);timer=setInterval(tick,2600/speed)}};
 const books=[{name:"心經",need:0},{name:"金剛經",need:3},{name:"阿彌陀經",need:6},{name:"藥師經",need:10},{name:"地藏經",need:20}];
 function renderLibrary(){const count=store.get("copyCount",0),box=document.getElementById("libraryList");box.innerHTML="";books.forEach(b=>{const unlocked=count>=b.need,row=document.createElement("div");row.className="library-row "+(unlocked?"":"locked");row.innerHTML=`<span>${unlocked?"📖":"🔒"} ${b.name}${b.need?`（抄經 ${b.need} 次解鎖）`:""}</span><button ${unlocked?"":"disabled"} data-book="${b.name}" data-mode="copy">抄經</button><button ${unlocked?"":"disabled"} data-book="${b.name}" data-mode="chant">誦經</button>`;box.appendChild(row)});box.querySelectorAll("button:not([disabled])").forEach(b=>b.onclick=()=>{msg(`已選擇《${b.dataset.book}》`);go(b.dataset.mode==="copy"?"copy":"chant")})}
 renderLibrary();
-let settings=store.get("settings",{music:true,woodfish:true,schedule:true,autosave:true});
-document.querySelectorAll(".toggle").forEach(t=>{const k=t.dataset.setting;t.classList.toggle("on",settings[k]!==false);t.onclick=()=>{settings[k]=!(settings[k]!==false);t.classList.toggle("on",settings[k]);store.set("settings",settings);msg("設定已更新")}});
+document.querySelectorAll(".toggle").forEach(t=>{const k=t.dataset.setting;t.classList.toggle("on",settings[k]!==false);t.onclick=()=>{settings[k]=!(settings[k]!==false);t.classList.toggle("on",settings[k]);if(k==="woodfish"){woodfishOn=settings[k];document.getElementById("woodfish").textContent="木魚："+(woodfishOn?"開":"關")}store.set("settings",settings);msg("設定已更新")}});
 function dayKey(d=new Date()){return[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
 function addHistory(type,detail){const history=store.get("history",[]);history.unshift({type,detail,time:new Date().toISOString()});store.set("history",history.slice(0,30));renderHistory()}
 function renderHistory(){const box=document.getElementById("historyList");if(!box)return;const history=store.get("history",[]);box.innerHTML=history.length?"":'<div class="history-row"><span>尚無紀錄</span><span>—</span></div>';history.slice(0,8).forEach(item=>{const d=new Date(item.time),row=document.createElement("div");row.className="history-row";row.innerHTML=`<span>${item.type}・${item.detail}</span><span>${d.toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}</span>`;box.appendChild(row)})}
