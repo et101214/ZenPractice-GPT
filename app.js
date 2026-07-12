@@ -56,10 +56,11 @@ document.querySelectorAll(".toggle").forEach(t=>{const k=t.dataset.setting;t.cla
 function dayKey(d=new Date()){return[d.getFullYear(),String(d.getMonth()+1).padStart(2,"0"),String(d.getDate()).padStart(2,"0")].join("-")}
 function addHistory(type,detail){const history=store.get("history",[]);history.unshift({type,detail,time:new Date().toISOString()});store.set("history",history.slice(0,30));renderHistory()}
 function renderHistory(){const box=document.getElementById("historyList");if(!box)return;const history=store.get("history",[]);box.innerHTML=history.length?"":'<div class="history-row"><span>尚無紀錄</span><span>—</span></div>';history.slice(0,8).forEach(item=>{const d=new Date(item.time),row=document.createElement("div");row.className="history-row";row.innerHTML=`<span>${item.type}・${item.detail}</span><span>${d.toLocaleString("zh-TW",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"})}</span>`;box.appendChild(row)})}
-function updateStreak(){const today=dayKey(),last=store.get("lastPracticeDay",null);let streak=store.get("streak",0);if(!last){streak=1;store.set("lastPracticeDay",today)}else if(last!==today){const diff=Math.round((new Date(today)-new Date(last))/86400000);streak=diff===1?streak+1:1;store.set("lastPracticeDay",today)}store.set("streak",streak);document.getElementById("streak").textContent=`連續修行 ${streak} 天`}
+function renderStreak(){document.getElementById("streak").textContent=`連續修行 ${store.get("streak",0)} 天`}
+function updateStreak(){const today=dayKey(),last=store.get("lastPracticeDay",null);let streak=store.get("streak",0);if(!last){streak=1;store.set("lastPracticeDay",today)}else if(last!==today){const diff=Math.round((new Date(today)-new Date(last))/86400000);streak=diff===1?streak+1:1;store.set("lastPracticeDay",today)}store.set("streak",streak);renderStreak()}
 function returnGreeting(){const now=Date.now(),last=store.get("lastVisit",now),mins=Math.max(0,Math.floor((now-last)/60000));store.set("lastVisit",now);const card=document.getElementById("returnCard");if(mins<2)return;document.getElementById("returnTitle").textContent=mins>1440?"明心一直在寺院等你。":"歡迎回到寺院。";document.getElementById("returnText").textContent=mins>1440?`你離開了約 ${Math.floor(mins/1440)} 天。明心已完成日常灑掃，今天一起抄一頁經吧。`:`你離開了約 ${mins} 分鐘。明心仍在依照時辰修行。`;card.classList.add("show")}
 document.getElementById("returnClose").onclick=()=>document.getElementById("returnCard").classList.remove("show");
-updateStreak();returnGreeting();renderHistory();
+renderStreak();returnGreeting();renderHistory();
 const originalSave=document.getElementById("save").onclick;
 document.getElementById("save").onclick=()=>{originalSave?.();addHistory("抄經","完成一頁");updateStreak()};
 const originalPlay=document.getElementById("play").onclick;
