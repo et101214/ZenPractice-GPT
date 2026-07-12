@@ -18,8 +18,9 @@ let busy=false;
 function activity(name){if(busy)return;busy=true;const a=acts[name];hm.classList.add("walking");hmi.src=asset("monk_walk");hs.innerHTML="<b>明心</b> 正前往目的地。";hm.style.left=a.x;hm.style.top=a.y;setTimeout(()=>{hm.classList.remove("walking");hmi.src=a.img;hs.innerHTML="<b>明心</b> "+a.text;busy=false},2450)}
 document.querySelectorAll("[data-action]").forEach(b=>b.onclick=()=>activity(b.dataset.action));
 function scheduledAction(){const h=new Date().getHours();if(h>=22||h<5)return "sleep";if(h<8)return "bow";if(h<11)return "sweep";if(h<13)return "dine";if(h<17)return "write";if(h<20)return "meditate";return "bow"}
-setTimeout(()=>activity(scheduledAction()),1200);
-setInterval(()=>{if(!busy&&store.get("settings",{schedule:true}).schedule!==false)activity(scheduledAction())},18000);
+const scheduleEnabled=()=>store.get("settings",{schedule:true}).schedule!==false;
+setTimeout(()=>{if(scheduleEnabled())activity(scheduledAction())},1200);
+setInterval(()=>{if(!busy&&scheduleEnabled())activity(scheduledAction())},18000);
 function progress(){const copied=store.get("copyCount",0),chant=store.get("chantCount",0);const pct=Math.min(100,Math.round(copied*20+chant*10));document.getElementById("homeProgress").style.width=pct+"%";document.getElementById("progressText").textContent=pct+"%"}
 progress();
 const c=document.getElementById("draw"),ctx=c.getContext("2d");let down=false,last=null,tool="brush",canvasReady=false;
