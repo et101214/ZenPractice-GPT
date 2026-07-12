@@ -1,0 +1,42 @@
+name: Validate static app
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check required files
+        run: |
+          test -f index.html
+          test -f app.js
+          test -f style.css
+          test -f manifest.webmanifest
+          test -f service-worker.js
+
+      - name: Validate JavaScript syntax
+        run: npm run check
+
+      - name: Validate manifest JSON
+        run: node -e "JSON.parse(require('fs').readFileSync('manifest.webmanifest','utf8')); console.log('manifest valid')"
+
+      - name: Verify index references
+        run: |
+          grep -q 'manifest.webmanifest' index.html
+          grep -q 'app.js' index.html
+          grep -q 'style.css' index.html
