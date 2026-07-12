@@ -1,0 +1,10 @@
+{
+  "name": "zenpractice-gpt",
+  "version": "0.6.0",
+  "private": true,
+  "description": "禪院修行互動式 PWA 原型",
+  "scripts": {
+    "check": "node --check app.js && node --check service-worker.js",
+    "serve": "python dev_server.py"
+  }
+}
