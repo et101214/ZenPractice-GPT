@@ -29,10 +29,10 @@
   <button class="hot" data-action="write" style="left:65%;top:42%;width:27%;height:10%" aria-label="抄經"></button>
   <button class="hot" data-go="copy" style="left:7%;top:66%;width:56%;height:6.8%" aria-label="手抄經書"></button>
   <button class="hot" data-go="chant" style="left:7%;top:73%;width:56%;height:6.8%" aria-label="誦經修行"></button>
-  <button class="hot" data-go="home" style="left:0;bottom:0;width:25%;height:12.7%"></button>
-  <button class="hot" data-go="copy" style="left:25%;bottom:0;width:25%;height:12.7%"></button>
-  <button class="hot" data-go="library" style="left:50%;bottom:0;width:25%;height:12.7%"></button>
-  <button class="hot" data-go="settings" style="left:75%;bottom:0;width:25%;height:12.7%"></button>
+  <button class="hot" data-go="home" style="left:0;bottom:0;width:25%;height:12.7%" aria-label="首頁"></button>
+  <button class="hot" data-go="copy" style="left:25%;bottom:0;width:25%;height:12.7%" aria-label="抄經"></button>
+  <button class="hot" data-go="library" style="left:50%;bottom:0;width:25%;height:12.7%" aria-label="經書"></button>
+  <button class="hot" data-go="settings" style="left:75%;bottom:0;width:25%;height:12.7%" aria-label="設定"></button>
  </div>
 </section>
 <section class="screen" id="copy">
@@ -44,7 +44,7 @@
    <button data-tool="brush" class="active">毛筆</button><button data-tool="pen">鋼筆</button><button data-tool="eraser">橡皮</button><button id="clear">清除</button><button id="fontBtn">字體</button><button id="save">儲存</button>
   </div>
   <div class="font-menu" id="fontMenu"><button data-font="KaiTi">楷體</button><button data-font="PMingLiU">明體</button><button data-font="DFKai-SB">標楷體</button><button data-font="serif">宋體</button></div>
-  <button class="hot" data-go="home" style="left:1%;top:2%;width:9%;height:12%"></button>
+<button class="hot" data-go="home" style="left:1%;top:2%;width:9%;height:12%" aria-label="返回首頁"></button>
  </div>
 </section>
 <section class="screen" id="chant">
@@ -52,11 +52,11 @@
   <img class="master" src="" data-asset="chant" alt="誦經">
   <div class="monk chant-monk"><img src="" data-asset="monk_chant"></div>
   <div class="chant-ui"><div class="chant-line" id="chantLine">觀自在菩薩，行深般若波羅蜜多時。</div><div class="chant-controls"><button id="prev">上一句</button><button class="play" id="play">▶</button><button id="next">下一句</button></div><div class="chant-extra"><button id="voice">語音：開</button><button id="speed">速度 1.0×</button><button id="woodfish">木魚：開</button></div></div>
-  <button class="hot" data-go="home" style="left:1%;top:2%;width:9%;height:16%"></button>
+<button class="hot" data-go="home" style="left:1%;top:2%;width:9%;height:16%" aria-label="返回首頁"></button>
  </div>
 </section>
-<section class="screen" id="library"><div class="frame" style="--w:442px;--h:570px;--ratio:442/570"><img class="master" src="" data-asset="library" alt="經書"><div class="library-overlay" id="libraryList"></div><button class="hot" data-go="home" style="left:1%;top:2%;width:10%;height:12%"></button></div></section>
-<section class="screen" id="settings"><div class="frame" style="--w:442px;--h:454px;--ratio:442/454"><img class="master" src="" data-asset="settings" alt="設定"><div class="settings-overlay" style="bottom:48%"><div class="setting-row"><span>背景音樂</span><div class="toggle on" data-setting="music"></div></div><div class="setting-row"><span>木魚音效</span><div class="toggle on" data-setting="woodfish"></div></div><div class="setting-row"><span>真實時間排程</span><div class="toggle on" data-setting="schedule"></div></div><div class="setting-row"><span>自動儲存</span><div class="toggle on" data-setting="autosave"></div></div></div><div class="history-panel"><h3>最近修行紀錄</h3><div id="historyList"></div></div><button class="hot" data-go="home" style="left:1%;top:2%;width:10%;height:13%"></button><button class="hot" data-go="home" style="left:0;bottom:0;width:25%;height:17%"></button><button class="hot" data-go="copy" style="left:25%;bottom:0;width:25%;height:17%"></button><button class="hot" data-go="library" style="left:50%;bottom:0;width:25%;height:17%"></button><button class="hot" data-go="settings" style="left:75%;bottom:0;width:25%;height:17%"></button></div></section>
+<section class="screen" id="library"><div class="frame" style="--w:442px;--h:570px;--ratio:442/570"><img class="master" src="" data-asset="library" alt="經書"><div class="library-overlay" id="libraryList"></div><button class="hot" data-go="home" style="left:1%;top:2%;width:10%;height:12%" aria-label="返回首頁"></button></div></section>
+<section class="screen" id="settings"><div class="frame" style="--w:442px;--h:454px;--ratio:442/454"><img class="master" src="" data-asset="settings" alt="設定"><div class="settings-overlay" style="bottom:48%"><div class="setting-row"><span>背景音樂</span><div class="toggle on" data-setting="music"></div></div><div class="setting-row"><span>木魚音效</span><div class="toggle on" data-setting="woodfish"></div></div><div class="setting-row"><span>真實時間排程</span><div class="toggle on" data-setting="schedule"></div></div><div class="setting-row"><span>自動儲存</span><div class="toggle on" data-setting="autosave"></div></div></div><div class="history-panel"><h3>最近修行紀錄</h3><div id="historyList"></div></div><button class="hot" data-go="home" style="left:1%;top:2%;width:10%;height:13%" aria-label="返回首頁"></button><button class="hot" data-go="home" style="left:0;bottom:0;width:25%;height:17%" aria-label="首頁"></button><button class="hot" data-go="copy" style="left:25%;bottom:0;width:25%;height:17%" aria-label="抄經"></button><button class="hot" data-go="library" style="left:50%;bottom:0;width:25%;height:17%" aria-label="經書"></button><button class="hot" data-go="settings" style="left:75%;bottom:0;width:25%;height:17%" aria-label="設定"></button></div></section>
 </div>
 <div class="dev"><button data-go="home" class="active">首頁</button><button data-go="copy">抄經</button><button data-go="chant">誦經</button><button data-go="library">經書</button><button data-go="settings">設定</button></div>
 <div class="modal" id="modal"><div class="modal-card"><h3 id="modalTitle">提示</h3><div id="modalText"></div><div class="modal-actions"><button id="modalClose">關閉</button></div></div></div>
